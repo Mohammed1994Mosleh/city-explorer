@@ -28,6 +28,31 @@ Estimate of time needed to complete: half hour
 
 Start time:2:10pm
 
-Finish time: _____
+Finish time:3:36pm
 
-Actual time needed to complete: _____
+Actual time needed to complete:one and half hour
+
+
+## Set up your React repository & API keys.
+Name of feature: Set up your React repository & API keys
+
+Estimate of time needed to complete: half hour
+
+Start time:2:10pm
+
+Finish time:3:36pm
+
+Actual time needed to complete:one and half hour
+
+
+## Locations: As a user of City Explorer, I want to enter the name of a location so that I can see the exact latitude and longitude of that location.
+
+Name of feature:As a user of City Explorer, I want to enter the name of a location so that I can see the exact latitude and longitude of that location.
+
+Estimate of time needed to complete: half hour
+
+Start time:3:40pm
+
+Finish time:
+
+Actual time needed to complete:one and half hour
