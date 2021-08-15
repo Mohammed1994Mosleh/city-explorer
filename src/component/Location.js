@@ -14,7 +14,8 @@ class Location extends React.Component{
        this.state={
            cityName:'',
            datLOcation:{},
-           showData:false
+           showData:false,
+           map:''
        }
 
    }
@@ -28,17 +29,27 @@ class Location extends React.Component{
         })
 
         let locURL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_KEY}&q=${this.state.searchCity}&format=json`;
+
+       
+       
         
    
          let resultData = await axios.get(locURL)
 
          await this.setState({
            datLOcation:resultData.data[0],
+           
+         
+           map:`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_KEY}&center=${this.state.datLOcation.lat},${this.state. datLOcation.lon}&zoom=13&size=400x400&format=jpeg&maptype=roadmap&markers=icon:<icon>|<latitude>,<longitude>&markers=icon:<icon>|<latitude>,<longitude>`,
+           
            showData:true
 
         })
         
-     console.log(this.state.showData);
+      
+   
+
+ 
    
        }
 
@@ -70,12 +81,18 @@ return(
 
 
       <Modal show={this.state.showData} >
+          {console.log(this.state.map)}
          
           <Modal.Header closeButton>
                <Modal.Title>{this.state.cityName}</Modal.Title>
           </Modal.Header>
+          <img src={this.state.map} />
 
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Body>Lat:{this.state. datLOcation.lat} /Lon:{this.state. datLOcation.lon}!
+          
+            {/* <img src='' > */}
+          </Modal.Body>
+
           
           <Modal.Footer>
              <Button variant="secondary" onClick={this.handleClose}>

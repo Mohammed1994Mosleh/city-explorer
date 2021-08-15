@@ -53,6 +53,18 @@ Estimate of time needed to complete: half hour
 
 Start time:3:40pm
 
-Finish time:
+Finish time:6
 
-Actual time needed to complete:one and half hour
+Actual time needed to complete:2,33 hour
+
+## Map: As a user, I want to see a map of the city so that I can see the layout of the area I want to explore.
+
+Name of feature:As a user, I want to see a map of the city so that I can see the layout of the area I want to explore.
+
+Estimate of time needed to complete: half hour
+
+Start time:6:43pm
+
+Finish time:6
+
+Actual time needed to complete:2,33 hour
