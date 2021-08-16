@@ -28,7 +28,7 @@ class Location extends React.Component{
             cityName:e.target.city.value
         })
 
-        let locURL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_KEY}&q=${this.state.searchCity}&format=json`;
+        let locURL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_KEY}&q=${this.state.cityName}&format=json`;
 
        
        
