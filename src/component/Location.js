@@ -15,7 +15,8 @@ class Location extends React.Component{
            cityName:'',
            datLOcation:{},
            showData:false,
-           map:''
+           map:'',
+           weather:[]
        }
 
    }
@@ -29,12 +30,17 @@ class Location extends React.Component{
         })
 
         let locURL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_KEY}&q=${this.state.cityName}&format=json`;
+        let wearUrl=`http://localhost:3001/weather?searchQuery=${this.state.cityName}`
 
+
+        
        
        
         
    
-         let resultData = await axios.get(locURL)
+         let resultData = await axios.get(locURL);
+
+         let wethData=await axios.get(wearUrl);
 
          await this.setState({
            datLOcation:resultData.data[0],
@@ -45,6 +51,14 @@ class Location extends React.Component{
            showData:true
 
         })
+        
+        
+        await this.setState({
+          weather:wethData
+        })
+
+
+        // console.log(this.state.weather);
         
       
    
@@ -81,16 +95,22 @@ return(
 
 
       <Modal show={this.state.showData} >
-          {console.log(this.state.map)}
+
+
+      {console.log(this.state.weather[1])}
          
           <Modal.Header closeButton>
                <Modal.Title>{this.state.cityName}</Modal.Title>
           </Modal.Header>
           <img src={this.state.map} />
 
-          <Modal.Body>Lat:{this.state. datLOcation.lat} /Lon:{this.state. datLOcation.lon}!
           
-            {/* <img src='' > */}
+
+          <Modal.Body>Lat:{this.state. datLOcation.lat} /Lon:{this.state. datLOcation.lon}!
+
+           <p>{this.state.weather.discription} </p>
+          
+          
           </Modal.Body>
 
           
@@ -101,6 +121,10 @@ return(
            
           </Modal.Footer>
       </Modal>
+
+
+
+      
 
           {/* {this.state.showData &&
             <p>{this.state.searchCity} Lat:{this.state. datLOcation.lat} /Lon:{this.state. datLOcation.lon} </p>
