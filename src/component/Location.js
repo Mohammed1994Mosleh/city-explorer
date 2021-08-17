@@ -2,9 +2,11 @@ import React from 'react';
 
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Modal from 'react-bootstrap/Modal'
+import Modal from 'react-bootstrap/Modal';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
-import Button from 'react-bootstrap/Button'
+
 
 
 class Location extends React.Component{
@@ -30,7 +32,7 @@ class Location extends React.Component{
         })
 
         let locURL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_KEY}&q=${this.state.cityName}&format=json`;
-        let wearUrl=`http://localhost:3001/weather?searchQuery=${this.state.cityName}`
+        let wearUrl=`${process.env.REACT_APP_SERVER_LINK}/weather?searchQuery=${this.state.cityName}`
 
 
         
@@ -48,13 +50,15 @@ class Location extends React.Component{
          
            map:`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_KEY}&center=${this.state.datLOcation.lat},${this.state. datLOcation.lon}&zoom=13&size=400x400&format=jpeg&maptype=roadmap&markers=icon:<icon>|<latitude>,<longitude>&markers=icon:<icon>|<latitude>,<longitude>`,
            
-           showData:true
+           
 
         })
         
         
         await this.setState({
-          weather:wethData
+          weather:wethData,
+
+          showData:true
         })
 
 
@@ -93,8 +97,40 @@ return(
         <button>Explore</button>
      </form>
 
+     {this.state.showData &&
+             <Card style={{ width: '18rem' }}>
+             <Card.Img variant="top" src={this.state.map} />
+           <Card.Body>
+             <Card.Title>{this.state.cityName}</Card.Title>
+             <Card.Text>
+                   Lat:{this.state. datLOcation.lat} /Lon:{this.state. datLOcation.lon}!
+                        {console.log(this.state.weather.data)}
+                        {console.log(this.state.weather.data[0].date)}
 
-      <Modal show={this.state.showData} >
+                        {this.state.weather.data.map((item,ind) =>{
+                            return(
+                              <>
+                                  <p key={ind}>{item.date} 
+                                       {item.lowtemp} 
+                                       {item.maxtemp}                                 
+                                  </p>
+                              </>
+                            )
+
+
+                        } )}
+
+                     {/* <p>{this.state.weather.data} </p> */}
+ 
+             </Card.Text>
+             <Button variant="primary">Go somewhere</Button>
+           </Card.Body>
+         </Card>
+          }
+
+        
+
+      {/* <Modal show={this.state.showData} >
 
 
       {console.log(this.state.weather[1])}
@@ -120,7 +156,7 @@ return(
              </Button>
            
           </Modal.Footer>
-      </Modal>
+      </Modal> */}
 
 
 
