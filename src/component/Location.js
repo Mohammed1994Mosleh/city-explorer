@@ -16,7 +16,7 @@ class Location extends React.Component{
            cityName:'',
            datLOcation:{},
            showData:false,
-          //  map:'',
+           map:'',
            weather:[],
            ccityWeatherandmovie:'',
            movies:[]
@@ -49,10 +49,11 @@ class Location extends React.Component{
 
            
      console.log(this.state.datLOcation.lat);
-          let map=`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_KEY}&center=${this.state.datLOcation.lat},${this.state. datLOcation.lon}&zoom=13&size=400x400&format=jpeg&maptype=roadmap&markers=icon:<icon>|<latitude>,<longitude>&markers=icon:<icon>|<latitude>,<longitude>`;
-          console.log(map);
+          let map1=`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_KEY}&center=${this.state.datLOcation.lat},${this.state. datLOcation.lon}&zoom=13&size=400x400&format=jpeg&maptype=roadmap&markers=icon:<icon>|<latitude>,<longitude>&markers=icon:<icon>|<latitude>,<longitude>`;
+          console.log(map1);
           await this.setState({
-            showData:true
+            showData:true,
+            map:map1
            })
           
         
@@ -97,7 +98,7 @@ return(
     <p>{this.state.cityName}</p> 
     <p>  Lat:{this.state.datLOcation.lat}</p>
     <p>Lon:{this.state.datLOcation.lon}</p>
-    <img src={this.map} />
+    <img src={this.state.map} />
 
     </>
  
