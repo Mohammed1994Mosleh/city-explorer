@@ -4,6 +4,8 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Movie from './Movie';
+import Weather from './Weather';
 
 
 
@@ -18,8 +20,8 @@ class Location extends React.Component{
            showData:false,
            map:'',
            weather:[],
-           ccityWeatherandmovie:'',
-           movies:[]
+           weath2Datastate:[],
+           moviesState:[]
        }
 
    }
@@ -31,43 +33,42 @@ class Location extends React.Component{
         await this.setState({
             cityName:e.target.city.value
         })
-        // https://eu1.locationiq.com/v1/search.php?key=YOUR_ACCESS_TOKEN&q=SEARCH_STRING&format=json
         let locURL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_KEY}&q=${this.state.cityName}&format=json`;
         let wearUrl=`${process.env.REACT_APP_SERVER_LINK}/weather?searchQuery=${this.state.cityName}`
+        let wearUrl2=`${process.env.REACT_APP_SERVER_LINK}/weather1?searchQuery=${this.state.cityName}`;
+        let movIeurl=`${process.env.REACT_APP_SERVER_LINK}/movies?searchQuery=${this.state.cityName}`
+        
+        
+        
         let resultData = await axios.get(locURL);
         let wethData=await axios.get(wearUrl);
-        // console.log(resultData);
-        // console.log(wethData);
+        let weath2Data=await axios.get(wearUrl2)
+        let movieData=await axios.get(movIeurl)
+        
+        
+        console.log(weath2Data);
+        console.log(movieData);
+       
        
          await this.setState({
            datLOcation:resultData.data[0],
            weather:wethData,
-           
+           weath2Datastate:weath2Data,
+           moviesState:movieData
             
            })
-           console.log(this.state.datLOcation)
+        console.log(this.state.weath2Datastate);
+          
 
            
-     console.log(this.state.datLOcation.lat);
+    
           let map1=`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_KEY}&center=${this.state.datLOcation.lat},${this.state. datLOcation.lon}&zoom=13&size=400x400&format=jpeg&maptype=roadmap&markers=icon:<icon>|<latitude>,<longitude>&markers=icon:<icon>|<latitude>,<longitude>`;
-          console.log(map1);
           await this.setState({
             showData:true,
             map:map1
            })
           
-        
-        console.log(this.state.datLOcation);
-        console.log('fdgfdsd',this.state.weather);
-
-        
-        
-      
-   
-
- 
-   
-       }
+ }
 
        
 
@@ -80,7 +81,8 @@ render(){
    
 
 return(
-<>
+<> 
+
      <h2>City Explorer</h2>
     
      <form onSubmit={this.getLocation}>
@@ -88,22 +90,44 @@ return(
         <button>Explore</button>
      </form>
 
-
+     
 
 
 
     {this.state.showData &&
 
-    <>
+ <>
     <p>{this.state.cityName}</p> 
     <p>  Lat:{this.state.datLOcation.lat}</p>
     <p>Lon:{this.state.datLOcation.lon}</p>
-    <img src={this.state.map} />
+    
+<img src={this.state.map} alt={this.state.cityName} />
+{console.log(this.state.moviesState)}
+<Movie movieDatapros={this.state.moviesState} />
+<Weather weatherDatapros={this.state.weath2Datastate}/>
 
-    </>
- 
- 
- }
+</>
+
+
+
+   
+    
+// this.state.weath2Datastate.map((item,ind) =>{
+    
+//     <>
+//       return(
+         
+//        <p>Latfrom3rd party ApI:{item.lat}</p>
+//       )
+//     </>
+
+//  })
+   
+     
+      
+
+    
+}
    
 </>)}}
 
