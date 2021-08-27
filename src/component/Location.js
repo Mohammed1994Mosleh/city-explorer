@@ -1,134 +1,111 @@
-import React from 'react';
+import React from "react";
 
-import axios from 'axios'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Movie from './Movie';
-import Weather from './Weather';
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import Movie from "./Movie";
+import Weather from "./Weather";
 
+class Location extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cityName: "",
+      datLOcation: {},
+      showData: false,
+      map: "",
+      weather: [],
+      weath2Datastate: [],
+      moviesState: [],
+    };
+  }
 
+  getLocation = async (e) => {
+    e.preventDefault();
+    await this.setState({
+      cityName: e.target.city.value,
+    });
+    let locURL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_KEY}&q=${this.state.cityName}&format=json`;
+    let wearUrl = `${process.env.REACT_APP_SERVER_LINK}/weather?searchQuery=${this.state.cityName}`;
+    let wearUrl2 = `${process.env.REACT_APP_SERVER_LINK}/weather1?searchQuery=${this.state.cityName}`;
+    let movIeurl = `${process.env.REACT_APP_SERVER_LINK}/movies?searchQuery=${this.state.cityName}`;
 
+    let resultData = await axios.get(locURL);
+    let wethData = await axios.get(wearUrl);
+    let weath2Data = await axios.get(wearUrl2);
+    let movieData = await axios.get(movIeurl);
 
-class Location extends React.Component{
+   
+    console.log(movieData);
 
-   constructor(props){
-       super(props)
-       this.state={
-           cityName:'',
-           datLOcation:{},
-           showData:false,
-           map:'',
-           weather:[],
-           weath2Datastate:[],
-           moviesState:[]
-       }
+    await this.setState({
+      datLOcation: resultData.data[0],
+      weather: wethData,
+      weath2Datastate: weath2Data,
+      moviesState: movieData,
+    });
+    console.log(this.state.moviesState);
 
-   }
+    let map1 = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_KEY}&center=${this.state.datLOcation.lat},${this.state.datLOcation.lon}&zoom=13&size=400x400&format=jpeg&maptype=roadmap&markers=icon:<icon>|<latitude>,<longitude>&markers=icon:<icon>|<latitude>,<longitude>`;
+    await this.setState({
+      showData: true,
+      map: map1,
+    });
+  };
 
+  render() {
+    return (
+      <>
+        <h2>City Explorer</h2>
 
-    getLocation=async(e)=>{
+        <form onSubmit={this.getLocation}>
+          <input type="text" placeholder="Enter city" name="city" />
+          <button>Explore</button>
+        </form>
 
-        e.preventDefault();
-        await this.setState({
-            cityName:e.target.city.value
-        })
-        let locURL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_KEY}&q=${this.state.cityName}&format=json`;
-        let wearUrl=`${process.env.REACT_APP_SERVER_LINK}/weather?searchQuery=${this.state.cityName}`
-        let wearUrl2=`${process.env.REACT_APP_SERVER_LINK}/weather1?searchQuery=${this.state.cityName}`;
-        let movIeurl=`${process.env.REACT_APP_SERVER_LINK}/movies?searchQuery=${this.state.cityName}`
-        
-        
-        
-        let resultData = await axios.get(locURL);
-        let wethData=await axios.get(wearUrl);
-        let weath2Data=await axios.get(wearUrl2)
-        let movieData=await axios.get(movIeurl)
-        
-        
-        console.log(weath2Data);
-        console.log(movieData);
-       
-       
-         await this.setState({
-           datLOcation:resultData.data[0],
-           weather:wethData,
-           weath2Datastate:weath2Data,
-           moviesState:movieData
+        {this.state.showData && (
+          <>
+
+            <img src={this.state.map} alt={this.state.cityName} />
             
-           })
-        console.log(this.state.weath2Datastate);
-          
+            <p>{this.state.cityName}</p>
+            <p> Lat:{this.state.datLOcation.lat}</p>
+            <p>Lon:{this.state.datLOcation.lon}</p>
 
            
-    
-          let map1=`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_KEY}&center=${this.state.datLOcation.lat},${this.state. datLOcation.lon}&zoom=13&size=400x400&format=jpeg&maptype=roadmap&markers=icon:<icon>|<latitude>,<longitude>&markers=icon:<icon>|<latitude>,<longitude>`;
-          await this.setState({
-            showData:true,
-            map:map1
-           })
-          
- }
+           
+            
+           
 
-       
+            {this.state.weath2Datastate.data.map((item, ind) => {
+              
+                return(
 
+                  <>
+                    <Weather key={ind} weatherDatapros={item} />
+                  
+                  </>
+                )
+              
+            })}
+            {this.state.moviesState.data.map((item,inx) =>{
+              return( 
+               <Movie key={inx} movieDatapros={item} />
+               )  
 
-   
+            })
 
-render(){
-
-
-   
-
-return(
-<> 
-
-     <h2>City Explorer</h2>
-    
-     <form onSubmit={this.getLocation}>
-        <input type='text' placeholder='Enter city' name='city' />
-        <button>Explore</button>
-     </form>
-
-     
+            }
 
 
 
-    {this.state.showData &&
 
- <>
-    <p>{this.state.cityName}</p> 
-    <p>  Lat:{this.state.datLOcation.lat}</p>
-    <p>Lon:{this.state.datLOcation.lon}</p>
-    
-<img src={this.state.map} alt={this.state.cityName} />
-{console.log(this.state.moviesState)}
-<Movie movieDatapros={this.state.moviesState} />
-<Weather weatherDatapros={this.state.weath2Datastate}/>
-
-</>
-
-
-
-   
-    
-// this.state.weath2Datastate.map((item,ind) =>{
-    
-//     <>
-//       return(
-         
-//        <p>Latfrom3rd party ApI:{item.lat}</p>
-//       )
-//     </>
-
-//  })
-   
-     
-      
-
-    
+          </>
+        )}
+      </>
+    );
+  }
 }
-   
-</>)}}
 
-export default Location
+export default Location;
