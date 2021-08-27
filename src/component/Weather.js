@@ -12,33 +12,11 @@ this.state={
 
 
 render(){
-    console.log(this.state.weatherDatastate);
 return(
 <>
-{this.state.weatherDatastate.length &&
-this.state.weatherDatastate.map(item =>{
-return(
-<>
-<p> date:{item.date}
-    description:{item.description}
-    lat from weather:{item.lat}
-    lon from weather:{item.lon}
-</p>
-</>
 
-)
-
-
-
-})
-
-
-}
-
-
-
-
-{/* <p>hi</p> */}
+<p>date:{this.props.weatherDatapros.date}</p>
+<p>description:{this.props.weatherDatapros.description}</p>
 
 </>
 )
